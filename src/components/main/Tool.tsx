@@ -1,24 +1,27 @@
+import Link from 'next/link'
 import React from 'react'
 
-function Tool() {
+function Tool({ tool }: { tool: Tool }) {
     return (
-        <div className="max-w- [420px] w-full bg-white rounded-3xl p-4 min-h-40 duration-300 flex flex-col justify-between outline-none hover:outline hover:outline-[5px] hover:outline-black/5 outline-offset-0 relative overflow-hidden group cursor-pointer">
+        <Link href={`/tools/${tool.url}`} className="max-w- [420px] w-full bg-white rounded-3xl p-4 min-h-40 duration-300 flex flex-col justify-between outline-none hover:outline hover:outline-[5px] hover:outline-black/5 outline-offset-0 relative overflow-hidden group cursor-pointer">
             <div className="font-medium">
-                <h1 className="text-lg">Json formatter</h1>
-                <p className="opacity-60">Quickly format .json code</p>
+                <h1 className="text-lg">{tool.name}</h1>
+                <p className="opacity-60">{tool.description}</p>
             </div>
 
             <div className="flex items-center gap-2">
-                <button className="bg-[#EEEEEE] px-2 h-8 text-sm rounded-lg">
-                    Dev tool
-                </button>
+                {tool.tags.map((tag, index) => (
+                    <button key={index} className="bg-[#EEEEEE] px-2 h-8 text-sm rounded-lg">
+                        {tag}
+                    </button>
+                ))}
             </div>
 
-            <svg width="130" height="133" className="absolute duration-300 -bottom-10 animate-spin-slow -right-10 opacity-0 group-hover:opacity-100" viewBox="0 0 130 133" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg width="130" height="133" className="absolute -bottom-10 gear -right-10 opacity-0 duration-200 group-hover:opacity-100" viewBox="0 0 130 133" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path opacity={0.05} d="M65.0007 89.6875C58.8896 89.6875 53.0289 87.2445 48.7077 82.896C44.3866 78.5476 41.959 72.6497 41.959 66.5C41.959 60.3503 44.3866 54.4525 48.7077 50.104C53.0289 45.7555 58.8896 43.3125 65.0007 43.3125C71.1117 43.3125 76.9724 45.7555 81.2936 50.104C85.6147 54.4525 88.0423 60.3503 88.0423 66.5C88.0423 72.6497 85.6147 78.5476 81.2936 82.896C76.9724 87.2445 71.1117 89.6875 65.0007 89.6875ZM113.915 72.9263C114.178 70.8063 114.376 68.6863 114.376 66.5C114.376 64.3138 114.178 62.1275 113.915 59.875L127.806 49.0763C129.056 48.0825 129.386 46.2938 128.596 44.8363L115.429 21.9138C114.639 20.4563 112.861 19.86 111.413 20.4563L95.0207 27.0813C91.5973 24.4975 88.0423 22.245 83.8948 20.5888L81.459 3.03251C81.3253 2.2522 80.9214 1.54472 80.3189 1.03542C79.7164 0.526116 78.9542 0.247881 78.1673 0.250012H51.834C50.1882 0.250012 48.8057 1.44251 48.5423 3.03251L46.1065 20.5888C41.959 22.245 38.404 24.4975 34.9807 27.0813L18.5882 20.4563C17.1398 19.86 15.3623 20.4563 14.5723 21.9138L1.40565 44.8363C0.549818 46.2938 0.944819 48.0825 2.19565 49.0763L16.0865 59.875C15.8232 62.1275 15.6257 64.3138 15.6257 66.5C15.6257 68.6863 15.8232 70.8063 16.0865 72.9263L2.19565 83.9238C0.944819 84.9175 0.549818 86.7063 1.40565 88.1638L14.5723 111.086C15.3623 112.544 17.1398 113.074 18.5882 112.544L34.9807 105.853C38.404 108.503 41.959 110.755 46.1065 112.411L48.5423 129.968C48.8057 131.558 50.1882 132.75 51.834 132.75H78.1673C79.8132 132.75 81.1957 131.558 81.459 129.968L83.8948 112.411C88.0423 110.689 91.5973 108.503 95.0207 105.853L111.413 112.544C112.861 113.074 114.639 112.544 115.429 111.086L128.596 88.1638C129.386 86.7063 129.056 84.9175 127.806 83.9238L113.915 72.9263Z" fill="black" />
             </svg>
 
-        </div>
+        </Link>
 
     )
 }

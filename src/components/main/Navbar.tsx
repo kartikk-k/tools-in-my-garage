@@ -3,10 +3,13 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
+import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip'
+import ToolsList from '../ToolsList'
 
 function Navbar() {
 
     const [isOpen, setIsOpen] = useState(false)
+    const [isTooltipOpen, setIsTooltipOpen] = useState(false)
 
     return (
         <div className='p-4 flex justify-between items-center'>
@@ -15,12 +18,19 @@ function Navbar() {
             </Link>
 
             <div className='gap-3 text-sm hidden md:flex'>
-                <button className='bg-neutral-900 text-white px-5 h-11 rounded-full'>
-                    Build my garage
-                </button>
-                <button className='bg-black/10 px-5 h-11 rounded-full'>
+                <Tooltip>
+                    <TooltipTrigger>
+                        <div className='bg-neutral-900 text-white px-5 h-11 rounded-full flex items-center'>
+                            Build my garage
+                        </div>
+                    </TooltipTrigger>
+                    <TooltipContent side='left'>
+                        Coming soon
+                    </TooltipContent>
+                </Tooltip>
+                <Link href={'https://github.com/kartikk-k/tools-in-my-garage'} target='_blank' className='bg-black/10 px-5 h-11 rounded-full flex items-center gap-2'>
                     Github
-                </button>
+                </Link>
             </div>
 
             <button className='md:hidden' onClick={() => setIsOpen(true)}>
@@ -34,29 +44,48 @@ function Navbar() {
                     <div
                         className='fixed h-screen w-screen top-0 left-0 z-40'
                     >
-                            <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 100 }}
-                                exit={{ opacity: 0 }}
-                                transition={{ duration: 0.3}}
-                                onClick={() => setIsOpen(false)}
-                                className='bg-black/20 h-full w-full absolute top-0 left-0'
-                            />
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 100 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.3 }}
+                            onClick={() => setIsOpen(false)}
+                            className='bg-black/20 h-full w-full absolute top-0 left-0'
+                        />
 
-                            <motion.div
-                                initial={{ x: 250 }}
-                                animate={{ x: 0 }}
-                                exit={{ x: 250 }}
-                                transition={{ ease: "easeOut" }}
-                                className='relative z-10 h-[100dvh] w-[250px] p-4 pl-0 float-right'
-                            >
-                                <div className='h-full bg-white w-full rounded-3xl'>
-                                    <div className='flex flex-col gap-2 text-sm p-6 items-start'>
-                                        <button className='opacity-70'>Build my garage</button>
-                                        <button className='opacity-70'>Github</button>
-                                    </div>
+                        <motion.div
+                            initial={{ x: 250 }}
+                            animate={{ x: 0 }}
+                            exit={{ x: 250 }}
+                            transition={{ ease: "easeOut" }}
+                            className='relative z-10 h-[100dvh] w-[250px] p-4 pl-0 float-right'
+                        >
+                            <div className='h-full bg-white w-full rounded-3xl p-6 space-y-8'>
+
+                                <div className='flex flex-col gap-2 text-sm items-start'>
+                                    <p className='text-xs opacity-60 pb-2'>Navigation</p>
+                                    <Tooltip open={isTooltipOpen} onOpenChange={setIsTooltipOpen}>
+                                        <TooltipTrigger>
+                                            <button onMouseEnter={() => setIsTooltipOpen(true)} onMouseLeave={() => setIsTooltipOpen(false)} className='opacity-70'>Build my garage</button>
+                                        </TooltipTrigger>
+                                        <TooltipContent side='bottom'>
+                                            Coming soon
+                                        </TooltipContent>
+                                    </Tooltip>
+                                    <Link href={'https://github.com/kartikk-k/tools-in-my-garage'} target='_blank' className='opacity-70'>Github</Link>
                                 </div>
-                            </motion.div>
+
+                                <hr className='border-t border-dashed border-black/30' />
+
+                                <div className='flex flex-col gap-2 text-sm items-start'>
+                                    <p className='text-xs opacity-60 pb-2'>Tools</p>
+                                    {ToolsList.map(tool => (
+                                        <Link key={tool.url} href={`/tools/${tool.url}`} className='opacity-70'>{tool.name}</Link>
+                                    ))}
+                                </div>
+
+                            </div>
+                        </motion.div>
 
 
                     </div>
