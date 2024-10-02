@@ -6,12 +6,31 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import Image from "next/image";
 import Link from "next/link";
 import v0Dev from '@/assets/images/v0-dev.png'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ToolsList from "@/components/ToolsList";
+import Fuse from 'fuse.js';
 
 export default function Home() {
 
   const [search, setSearch] = useState('')
+  const [tools, setTools] = useState(ToolsList)
+
+  useEffect(() => {
+    filterTools()
+  }, [search])
+
+  const fuse = new Fuse(ToolsList, {
+    keys: ['name', 'description', 'tags'],
+    includeScore: true,
+    threshold: 0.3,
+  });
+
+  const filterTools = () => {
+    if (!search.trim()) return setTools(ToolsList)
+    const results = fuse.search(search);
+    const filteredTools = results.map(result => result.item);
+    setTools(filteredTools);
+  }
 
   return (
     <div>
@@ -50,7 +69,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4">
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {ToolsList.map((tool, index) => (
+            {tools.map((tool, index) => (
               <Tool key={index} tool={tool} />
             ))}
           </div>
